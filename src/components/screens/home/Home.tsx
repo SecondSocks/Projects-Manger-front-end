@@ -1,5 +1,11 @@
 'use client'
 
+import { Header } from './header/Header'
+
 export function Home() {
-	return <div>Home page</div>
+	return (
+		<div className=''>
+			<Header />
+		</div>
+	)
 }
