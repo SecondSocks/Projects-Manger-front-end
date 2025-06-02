@@ -1,3 +1,5 @@
+'use client'
+
 import { useRouter } from 'next/navigation'
 
 import { Logo } from '@/components/ui/Logo/Logo'

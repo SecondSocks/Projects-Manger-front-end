@@ -17,6 +17,7 @@ export function Logo() {
 			<H1
 				size='lg'
 				content='Nexa'
+				className='select-none cursor-default'
 			/>
 		</div>
 	)
