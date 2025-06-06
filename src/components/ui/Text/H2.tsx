@@ -6,10 +6,10 @@ interface Props {
 	className?: string
 }
 
-export function H1({ size = 'none', content, className }: Readonly<Props>) {
+export function H2({ size = 'none', content, className }: Readonly<Props>) {
 	return (
 		<h1
-			className={cn(`${className} scroll-m-20 font-extrabold tracking-tight`, {
+			className={cn(`${className} scroll-m-20 font-semibold tracking-tight`, {
 				['text-6xl']: size === 'xl',
 				['text-5xl']: size === 'lg',
 				['text-3xl']: size === 'md',
