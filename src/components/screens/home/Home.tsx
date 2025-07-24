@@ -9,9 +9,9 @@ const Statistics = dynamic(() => import('./statistics/Statistics'), {
 const Benefits = dynamic(() => import('./benefits/Benefits'), { ssr: false })
 const Footer = dynamic(() => import('./footer/Footer'), { ssr: false })
 
-export function Home() {
+export default function Home() {
 	return (
-		<div className=''>
+		<div>
 			<Header />
 			<Statistics />
 			<Benefits />

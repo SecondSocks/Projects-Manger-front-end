@@ -12,12 +12,12 @@ import {
 } from './auth.helper'
 import {
 	IAuthResponse,
-	ILoginRequest,
-	IRegisterRequest
+	TLoginRequest,
+	TRegisterRequest
 } from '@/shared/types/auth.types'
 
 class AuthService {
-	async login(data: ILoginRequest) {
+	async login(data: TLoginRequest) {
 		const response = await axiosClassic.post<IAuthResponse>(
 			ServerUrls.AUTH.LOGIN,
 			data
@@ -30,7 +30,7 @@ class AuthService {
 		return response.data.user
 	}
 
-	async register(data: IRegisterRequest) {
+	async register(data: TRegisterRequest) {
 		const response = await axiosClassic.post<IAuthResponse>(
 			ServerUrls.AUTH.REGISTER,
 			data

@@ -1,20 +1,17 @@
+import z from 'zod'
+
 import { TokensName } from '@/constants/names.constants'
+
+import {
+	LoginRequestSchema,
+	RegisterRequestSchema
+} from '../schemes/auth.schemes'
 
 import { IUser } from './user.types'
 
-export interface ILoginRequest {
-	email: string
-	password: string
-}
+export type TLoginRequest = z.infer<typeof LoginRequestSchema>
 
-export interface IRegisterRequest {
-	name: string
-	surname: string
-	age: number
-	email: string
-	phoneNumber: string
-	password: string
-}
+export type TRegisterRequest = z.infer<typeof RegisterRequestSchema>
 
 export interface ITokens {
 	[TokensName.ACCESS_TOKEN]: string
