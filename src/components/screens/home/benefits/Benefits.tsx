@@ -7,7 +7,7 @@ import { Separator } from '@/components/ui/separator'
 import { BenefitCard } from './cards/BenefitCard'
 import { BenefitCardsData } from './cards/BenefitsCards.data'
 
-export function Benefits() {
+export default function Benefits() {
 	return (
 		<div className='flex-center flex-col mb-25'>
 			<H1

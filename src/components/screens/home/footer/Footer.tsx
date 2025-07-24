@@ -3,7 +3,7 @@ import { Heart } from 'lucide-react'
 import { H1 } from '@/components/ui/Text/H1'
 import { Button } from '@/components/ui/button'
 
-export function Footer() {
+export default function Footer() {
 	return (
 		<div className='bg-foreground text-background flex-center flex-col gap-7.5 h-105'>
 			<H1

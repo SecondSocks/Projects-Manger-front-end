@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 
 import { NavMenu } from './NavigationMenu/NavMenu'
 
-export function Header() {
+export default function Header() {
 	const { push } = useRouter()
 
 	return (

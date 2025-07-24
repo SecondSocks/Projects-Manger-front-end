@@ -4,7 +4,7 @@ import { Separator } from '@/components/ui/separator'
 import { StatisticChart } from './StatisticChart'
 import { statisticsData } from './Statistics.data'
 
-export function Statistics() {
+export default function Statistics() {
 	return (
 		<div className='my-25 flex-center flex-col'>
 			<H1

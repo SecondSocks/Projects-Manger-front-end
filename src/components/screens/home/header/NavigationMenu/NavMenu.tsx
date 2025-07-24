@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 import {
 	NavigationMenu,
@@ -13,6 +13,8 @@ import {
 import { ListItem } from './ListItem'
 
 export function NavMenu() {
+	const router = useRouter()
+
 	return (
 		<NavigationMenu>
 			<NavigationMenuList>
@@ -23,24 +25,28 @@ export function NavMenu() {
 							<ListItem
 								href='#'
 								title='Introduction'
+								onClick={() => router.push('/')}
 							>
 								Re-usable components built using Radix UI and Tailwind CSS.
 							</ListItem>
 							<ListItem
 								href='#'
 								title='Introduction'
+								onClick={() => router.push('/')}
 							>
 								Re-usable components built using Radix UI and Tailwind CSS.
 							</ListItem>
 							<ListItem
 								href='#'
 								title='Introduction'
+								onClick={() => router.push('/')}
 							>
 								Re-usable components built using Radix UI and Tailwind CSS.
 							</ListItem>
 							<ListItem
 								href='#'
 								title='Introduction'
+								onClick={() => router.push('/')}
 							>
 								Re-usable components built using Radix UI and Tailwind CSS.
 							</ListItem>
@@ -48,44 +54,36 @@ export function NavMenu() {
 					</NavigationMenuContent>
 				</NavigationMenuItem>
 				<NavigationMenuItem>
-					<Link
-						href='/docs'
-						passHref
+					<NavigationMenuLink
+						className={navigationMenuTriggerStyle()}
+						onClick={() => router.push('/')}
 					>
-						<NavigationMenuLink className={navigationMenuTriggerStyle()}>
-							Documentation
-						</NavigationMenuLink>
-					</Link>
+						Documentation
+					</NavigationMenuLink>
 				</NavigationMenuItem>
 				<NavigationMenuItem>
-					<Link
-						href='/pricing'
-						passHref
+					<NavigationMenuLink
+						className={navigationMenuTriggerStyle()}
+						onClick={() => router.push('/')}
 					>
-						<NavigationMenuLink className={navigationMenuTriggerStyle()}>
-							Pricing
-						</NavigationMenuLink>
-					</Link>
+						Pricing
+					</NavigationMenuLink>
 				</NavigationMenuItem>
 				<NavigationMenuItem>
-					<Link
-						href='/contact-us'
-						passHref
+					<NavigationMenuLink
+						className={navigationMenuTriggerStyle()}
+						onClick={() => router.push('/')}
 					>
-						<NavigationMenuLink className={navigationMenuTriggerStyle()}>
-							Contact Us
-						</NavigationMenuLink>
-					</Link>
+						Contact Us
+					</NavigationMenuLink>
 				</NavigationMenuItem>
 				<NavigationMenuItem>
-					<Link
-						href='/blog'
-						passHref
+					<NavigationMenuLink
+						className={navigationMenuTriggerStyle()}
+						onClick={() => router.push('/')}
 					>
-						<NavigationMenuLink className={navigationMenuTriggerStyle()}>
-							Blog
-						</NavigationMenuLink>
-					</Link>
+						Blog
+					</NavigationMenuLink>
 				</NavigationMenuItem>
 			</NavigationMenuList>
 		</NavigationMenu>

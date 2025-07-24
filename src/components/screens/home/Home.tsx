@@ -1,13 +1,17 @@
 'use client'
 
-import { Benefits } from './benefits/Benefits'
-import { Footer } from './footer/Footer'
-import { Header } from './header/Header'
-import { Statistics } from './statistics/Statistics'
+import dynamic from 'next/dynamic'
 
-export function Home() {
+const Header = dynamic(() => import('./header/Header'), { ssr: false })
+const Statistics = dynamic(() => import('./statistics/Statistics'), {
+	ssr: false
+})
+const Benefits = dynamic(() => import('./benefits/Benefits'), { ssr: false })
+const Footer = dynamic(() => import('./footer/Footer'), { ssr: false })
+
+export default function Home() {
 	return (
-		<div className=''>
+		<div>
 			<Header />
 			<Statistics />
 			<Benefits />
