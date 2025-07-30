@@ -1,80 +1,31 @@
-import axios from 'axios'
+import { IAuthResponse, TLoginRequest, TRegisterRequest } from "@/shared/types/auth.types"
+import { axiosClassic } from "../api/interceptors"
+import { ServerUrls } from "@/config/url.config"
+import { AxiosResponse } from "axios"
+import Cookies from "js-cookie"
+import { TokensName } from "@/constants/names.constants"
 
-import { ServerUrls } from '@/config/url.config'
-
-import { errorCatch, getContentType } from '../api/api.helper'
-import { axiosClassic } from '../api/interceptors'
-
-import {
-	getRefreshToken,
-	removeFromStorage,
-	saveToStorage
-} from './auth.helper'
-import {
-	IAuthResponse,
-	TLoginRequest,
-	TRegisterRequest
-} from '@/shared/types/auth.types'
 
 class AuthService {
-	async login(data: TLoginRequest) {
-		const response = await axiosClassic.post<IAuthResponse>(
-			ServerUrls.AUTH.LOGIN,
-			data
-		)
-
-		if (response.data.accessToken) {
-			saveToStorage(response.data.accessToken, response.data.refreshToken)
-		}
-
-		return response.data.user
+	async login(data: TLoginRequest): Promise<IAuthResponse> {
+		const response = await axiosClassic.post<IAuthResponse>(ServerUrls.AUTH.LOGIN, data)
+		return response.data
 	}
 
-	async register(data: TRegisterRequest) {
-		const response = await axiosClassic.post<IAuthResponse>(
-			ServerUrls.AUTH.REGISTER,
-			data
-		)
-
-		if (response.data.accessToken) {
-			saveToStorage(response.data.accessToken, response.data.refreshToken)
-		}
-
-		return response.data.user
+	async register(data: TRegisterRequest): Promise<IAuthResponse> {
+		const response = await axiosClassic.post<IAuthResponse>(ServerUrls.AUTH.REGISTER, data)
+		return response.data
 	}
 
-	async logout() {
-		removeFromStorage()
+	async getNewTokens(): Promise<IAuthResponse> {
+		const refreshToken = Cookies.get(TokensName.REFRESH_TOKEN)
+		const response = await axiosClassic.post<IAuthResponse>(ServerUrls.AUTH.NEW_TOKENS, { refreshToken })
+		return response.data
 	}
 
-	async getNewTokens() {
-		const refreshToken = getRefreshToken()
-
-		const response = await axios.post<string, { data: IAuthResponse }>(
-			ServerUrls.AUTH.NEW_TOKENS,
-			{ refreshToken },
-			{ headers: getContentType() }
-		)
-
-		if (response.data.accessToken) {
-			saveToStorage(response.data.accessToken, response.data.refreshToken)
-		}
-
-		return response.data.user
-	}
-
-	async checkAuth() {
-		try {
-			const response = await this.getNewTokens()
-			return response
-		} catch (error) {
-			if (errorCatch(error) === 'jwt expired') {
-				//TODO: Add Toast notification
-				this.logout()
-			}
-
-			return error
-		}
+	async logout(): Promise<void> {
+		Cookies.remove(TokensName.ACCESS_TOKEN)
+		Cookies.remove(TokensName.REFRESH_TOKEN)
 	}
 }
 

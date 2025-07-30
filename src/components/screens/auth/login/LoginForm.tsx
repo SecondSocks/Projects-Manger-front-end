@@ -6,13 +6,21 @@ import { Error } from '@/components/ui/Text/Error'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
+import { useAuth } from '@/hooks/useAuth'
+
 import { ForgotPasswordLink } from '../ForgotPasswordLink'
 
 import { LoginRequestSchema } from '@/shared/schemes/auth.schemes'
 import { TLoginRequest } from '@/shared/types/auth.types'
 
 export function LoginForm() {
-	const form = useForm<TLoginRequest>({
+	const { login, isLoading, error } = useAuth()
+	const {
+		register,
+		handleSubmit,
+		reset,
+		formState: { errors }
+	} = useForm<TLoginRequest>({
 		mode: 'onChange',
 		resolver: zodResolver(LoginRequestSchema),
 		defaultValues: {
@@ -22,22 +30,28 @@ export function LoginForm() {
 	})
 
 	const onSubmit: SubmitHandler<TLoginRequest> = data => {
-		console.table(data)
-		form.reset()
+		//TODO: Add toast
+		try {
+			login(data)
+		} catch (error) {
+			console.log(error)
+		}
+
+		reset()
 	}
 
-	const emailError = form.formState.errors?.email
-	const passwordError = form.formState.errors?.password
+	const emailError = errors?.email
+	const passwordError = errors?.password
 
 	return (
 		<form
-			onSubmit={form.handleSubmit(onSubmit)}
+			onSubmit={handleSubmit(onSubmit)}
 			className='w-full'
 		>
 			<fieldset className='mb-4'>
 				<label>Email</label>
 				<Input
-					{...form.register('email')}
+					{...register('email')}
 					placeholder='Enter your email...'
 				/>
 				{emailError && <Error>{emailError.message}</Error>}
@@ -45,14 +59,19 @@ export function LoginForm() {
 			<fieldset className='mb-2'>
 				<label>Password</label>
 				<Input
-					{...form.register('password')}
+					{...register('password')}
 					placeholder='Enter your password...'
 				/>
 				{passwordError && <Error>{passwordError.message}</Error>}
 			</fieldset>
 			<ForgotPasswordLink />
 			<div className='flex gap-4 items-center'>
-				<Button className='hover:scale-110 cursor-pointer'>Login</Button>
+				<Button
+					className='hover:scale-110 cursor-pointer'
+					disabled={isLoading}
+				>
+					Login
+				</Button>
 				<Link
 					href='/register'
 					className='opacity-80 hover:opacity-100 transition-opacity'

@@ -1,25 +1,26 @@
-import axios from 'axios'
-
+// api/interceptors.ts
 import { ClientUrls } from '@/config/url.config'
-
-import { getAccessToken, removeFromStorage } from '../auth/auth.helper'
-import { authService } from '../auth/auth.service'
-
+import axios from 'axios'
+import Cookies from 'js-cookie'
 import { errorCatch } from './api.helper'
+import { authService } from '../auth/auth.service'
+import { authClientService } from './client-api'
+import { useUserActions } from '@/store/store'
 
 export const axiosClassic = axios.create({
 	baseURL: ClientUrls.BASE_URL,
 	headers: {
 		'Content-Type': 'application/json'
 	},
-	withCredentials: true
+	withCredentials: true 
 })
 
 axiosClassic.interceptors.request.use(async config => {
-	const accessToken = getAccessToken()
+	const accessToken = Cookies.get('accessToken')
 
-	if (config.headers && accessToken?.toString())
+	if (config.headers && accessToken) {
 		config.headers.Authorization = `Bearer ${accessToken}`
+	}
 
 	return config
 })
@@ -39,11 +40,18 @@ axiosClassic.interceptors.response.use(
 			originalRequest._isRetry = true
 
 			try {
-				await authService.getNewTokens()
+				const response = await authService.getNewTokens()
+				authClientService.setAuthData(response) // обновляем куки
 
+				// Повторяем оригинальный запрос
 				return axiosClassic.request(originalRequest)
 			} catch (error) {
-				if (errorCatch(error) === 'jwt expired') removeFromStorage()
+				if (errorCatch(error) === 'jwt expired') {
+					authClientService.clearAuthData()
+					// Очищаем Zustand store
+					const { logout } = useUserActions()
+					logout()
+				}
 			}
 		}
 
